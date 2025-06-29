@@ -1,94 +1,184 @@
--- UI Setup
-local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
-local MainFrame = Instance.new("Frame", ScreenGui)
-local Title = Instance.new("TextLabel", MainFrame)
-local Info = Instance.new("TextLabel", MainFrame)
-local PetName = Instance.new("TextLabel", MainFrame)
-local PetKG = Instance.new("TextLabel", MainFrame)
-local PetAge = Instance.new("TextLabel", MainFrame)
-local SpawnButton = Instance.new("TextButton", MainFrame)
-local DupeButton = Instance.new("TextButton", MainFrame)
-local LoadingFrame = Instance.new("Frame", ScreenGui)
-local LoadingText = Instance.new("TextLabel", LoadingFrame)
+--// GUI Setup //
+local CoreGui = game:GetService("CoreGui")
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "DarkScriptGui"
+ScreenGui.ResetOnSpawn = false
+ScreenGui.IgnoreGuiInset = true
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Global
+ScreenGui.Parent = CoreGui
 
--- GUI Design
-ScreenGui.Name = "PetSpawnerUI"
-MainFrame.Size = UDim2.new(0, 250, 0, 200)
-MainFrame.Position = UDim2.new(0.5, -125, 0.5, -100)
-MainFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+--// Main Frame //
+local MainFrame = Instance.new("Frame")
+MainFrame.Name = "MainFrame"
+MainFrame.Size = UDim2.new(0, 400, 0, 300)
+MainFrame.Position = UDim2.new(0.5, -200, 0.5, -150)
+MainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
 MainFrame.BorderSizePixel = 0
+MainFrame.Parent = ScreenGui
 
-Title.Text = "OWNER - MakuScripts"
-Title.Size = UDim2.new(1, 0, 0, 30)
-Title.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-Title.TextScaled = true
+--// Header //
+local Header = Instance.new("TextLabel")
+Header.Size = UDim2.new(1, 0, 0, 40)
+Header.BackgroundTransparency = 1
+Header.Text = "Dark script modified by MakuScripts"
+Header.TextColor3 = Color3.fromRGB(255, 255, 255)
+Header.Font = Enum.Font.GothamBold
+Header.TextSize = 20
+Header.Parent = MainFrame
 
-Info.Text = "🐾 PET SPAWNER UPDATE 🐾"
-Info.Position = UDim2.new(0, 0, 0, 30)
-Info.Size = UDim2.new(1, 0, 0, 20)
-Info.TextColor3 = Color3.fromRGB(200, 200, 200)
-Info.BackgroundTransparency = 1
-Info.TextScaled = true
+--// Tabs (Pet/Seed/Egg) -- simplified for demo //
+local Tabs = {"Pet Spawner", "Seed Spawner", "Egg Spawner"}
+for i, name in ipairs(Tabs) do
+    local Button = Instance.new("TextButton")
+    Button.Size = UDim2.new(0.3, -10, 0, 30)
+    Button.Position = UDim2.new((i-1)*0.35, 5, 0, 50)
+    Button.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Button.Text = name
+    Button.Font = Enum.Font.Gotham
+    Button.TextSize = 14
+    Button.Parent = MainFrame
+end
 
-PetName.Text = "Pet Name: Fluffy"
-PetName.Position = UDim2.new(0, 0, 0, 55)
-PetName.Size = UDim2.new(1, 0, 0, 20)
-PetName.BackgroundTransparency = 1
-PetName.TextColor3 = Color3.fromRGB(255, 255, 255)
+--// Input Fields //
+local function createInput(labelText, yPos)
+    local Label = Instance.new("TextLabel")
+    Label.Size = UDim2.new(0.4, 0, 0, 25)
+    Label.Position = UDim2.new(0.05, 0, 0, yPos)
+    Label.BackgroundTransparency = 1
+    Label.Text = labelText
+    Label.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Label.Font = Enum.Font.Gotham
+    Label.TextSize = 14
+    Label.TextXAlignment = Enum.TextXAlignment.Left
+    Label.Parent = MainFrame
 
-PetKG.Text = "Pet Kilo: 45 KG"
-PetKG.Position = UDim2.new(0, 0, 0, 75)
-PetKG.Size = UDim2.new(1, 0, 0, 20)
-PetKG.BackgroundTransparency = 1
-PetKG.TextColor3 = Color3.fromRGB(255, 255, 255)
+    local Box = Instance.new("TextBox")
+    Box.Size = UDim2.new(0.5, 0, 0, 25)
+    Box.Position = UDim2.new(0.45, 0, 0, yPos)
+    Box.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    Box.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Box.Font = Enum.Font.Gotham
+    Box.TextSize = 14
+    Box.Text = labelText
+    Box.Parent = MainFrame
+end
 
-PetAge.Text = "Pet Age: 5 yrs"
-PetAge.Position = UDim2.new(0, 0, 0, 95)
-PetAge.Size = UDim2.new(1, 0, 0, 20)
-PetAge.BackgroundTransparency = 1
-PetAge.TextColor3 = Color3.fromRGB(255, 255, 255)
+createInput("Select Pet", 90)
+createInput("Pet Weight (KG)", 130)
+createInput("Pet Age", 170)
 
--- Spawn Button
-SpawnButton.Text = "Spawn 🐾"
-SpawnButton.Position = UDim2.new(0.1, 0, 0.7, 0)
-SpawnButton.Size = UDim2.new(0.35, 0, 0.2, 0)
-SpawnButton.BackgroundColor3 = Color3.fromRGB(0, 170, 0)
+--// Spawn Button //
+local SpawnButton = Instance.new("TextButton")
+SpawnButton.Size = UDim2.new(0.9, 0, 0, 40)
+SpawnButton.Position = UDim2.new(0.05, 0, 0, 220)
+SpawnButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 SpawnButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+SpawnButton.Font = Enum.Font.GothamBold
+SpawnButton.TextSize = 16
+SpawnButton.Text = "Spawn Selected Pet"
+SpawnButton.Parent = MainFrame
 
--- Dupe Button
-DupeButton.Text = "Dupe ⚙️"
-DupeButton.Position = UDim2.new(0.55, 0, 0.7, 0)
-DupeButton.Size = UDim2.new(0.35, 0, 0.2, 0)
-DupeButton.BackgroundColor3 = Color3.fromRGB(170, 0, 0)
-DupeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+--// Minimize Button //
+local MinimizeCircle = Instance.new("TextButton")
+MinimizeCircle.Name = "Minimize"
+MinimizeCircle.Size = UDim2.new(0, 35, 0, 35)
+MinimizeCircle.Position = UDim2.new(1, -40, 0, 5)
+MinimizeCircle.Text = "-"
+MinimizeCircle.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+MinimizeCircle.TextColor3 = Color3.fromRGB(255, 255, 255)
+MinimizeCircle.Font = Enum.Font.GothamBold
+MinimizeCircle.TextSize = 18
+MinimizeCircle.Parent = MainFrame
 
--- Loading Frame
-LoadingFrame.Size = UDim2.new(0, 300, 0, 100)
-LoadingFrame.Position = UDim2.new(0.5, -150, 0.5, -50)
-LoadingFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-LoadingFrame.Visible = false
+local IconButton = Instance.new("TextButton")
+IconButton.Text = "☰"
+IconButton.Visible = false
+IconButton.Size = UDim2.new(0, 40, 0, 40)
+IconButton.Position = UDim2.new(1, -45, 0, 5)
+IconButton.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+IconButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+IconButton.Font = Enum.Font.GothamBold
+IconButton.TextSize = 20
+IconButton.Parent = ScreenGui
 
-LoadingText.Text = "🔄 Generating Pet ID number for dupe..."
-LoadingText.Size = UDim2.new(1, 0, 1, 0)
-LoadingText.TextColor3 = Color3.fromRGB(255, 255, 255)
+MinimizeCircle.MouseButton1Click:Connect(function()
+    MainFrame.Visible = false
+    IconButton.Visible = true
+end)
+
+IconButton.MouseButton1Click:Connect(function()
+    MainFrame.Visible = true
+    IconButton.Visible = false
+end)
+
+--// Enhanced Loading Screen //
+local Loading = Instance.new("Frame")
+Loading.Size = UDim2.new(1, 0, 1, 0)
+Loading.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Loading.ZIndex = 10
+Loading.Visible = false
+Loading.Parent = ScreenGui
+
+local UIGradient = Instance.new("UIGradient")
+UIGradient.Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(10, 10, 10)),
+    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(20, 20, 20)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(10, 10, 10))
+}
+UIGradient.Rotation = 90
+UIGradient.Parent = Loading
+
+local LoadingText = Instance.new("TextLabel")
+LoadingText.Text = ""
+LoadingText.Font = Enum.Font.Code
+LoadingText.TextSize = 28
+LoadingText.TextColor3 = Color3.fromRGB(0, 255, 100)
+LoadingText.AnchorPoint = Vector2.new(0.5, 0.5)
+LoadingText.Position = UDim2.new(0.5, 0, 0.5, 0)
 LoadingText.BackgroundTransparency = 1
-LoadingText.TextScaled = true
-LoadingText.Parent = LoadingFrame
+LoadingText.ZIndex = 11
+LoadingText.Parent = Loading
 
--- Button Function
-local function showLoading()
-	LoadingFrame.Visible = true
-	wait(3)
-	LoadingFrame.Visible = false
+local Spinner = Instance.new("ImageLabel")
+Spinner.Size = UDim2.new(0, 50, 0, 50)
+Spinner.Position = UDim2.new(0.5, -25, 0.5, -80)
+Spinner.AnchorPoint = Vector2.new(0.5, 0.5)
+Spinner.BackgroundTransparency = 1
+Spinner.Image = "rbxassetid://11372950109"
+Spinner.ZIndex = 11
+Spinner.Parent = Loading
+
+task.spawn(function()
+    while true do
+        Spinner.Rotation += 5
+        task.wait(0.02)
+    end
+end)
+
+local loadingMessages = {
+    "Generating pet ID for duping...",
+    "Bypassing anti-ban system...",
+    "Injecting spoofed packets...",
+    "Finding vulnerability...",
+    "Fooling the game...",
+    "Hacking reality..."
+}
+
+local function typeCycle()
+    while true do
+        for _, msg in ipairs(loadingMessages) do
+            LoadingText.Text = ""
+            for i = 1, #msg do
+                LoadingText.Text = string.sub(msg, 1, i)
+                wait(0.04)
+            end
+            wait(1)
+        end
+    end
 end
 
 SpawnButton.MouseButton1Click:Connect(function()
-	showLoading()
-	print("✅ Pet Spawned")
-end)
-
-DupeButton.MouseButton1Click:Connect(function()
-	showLoading()
-	print("✅ Pet Duplicated")
+    Loading.Visible = true
+    typeCycle()
 end)
