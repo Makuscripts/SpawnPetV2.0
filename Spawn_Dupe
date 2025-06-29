@@ -1,0 +1,94 @@
+-- UI Setup
+local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
+local MainFrame = Instance.new("Frame", ScreenGui)
+local Title = Instance.new("TextLabel", MainFrame)
+local Info = Instance.new("TextLabel", MainFrame)
+local PetName = Instance.new("TextLabel", MainFrame)
+local PetKG = Instance.new("TextLabel", MainFrame)
+local PetAge = Instance.new("TextLabel", MainFrame)
+local SpawnButton = Instance.new("TextButton", MainFrame)
+local DupeButton = Instance.new("TextButton", MainFrame)
+local LoadingFrame = Instance.new("Frame", ScreenGui)
+local LoadingText = Instance.new("TextLabel", LoadingFrame)
+
+-- GUI Design
+ScreenGui.Name = "PetSpawnerUI"
+MainFrame.Size = UDim2.new(0, 250, 0, 200)
+MainFrame.Position = UDim2.new(0.5, -125, 0.5, -100)
+MainFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+MainFrame.BorderSizePixel = 0
+
+Title.Text = "OWNER - MakuScripts"
+Title.Size = UDim2.new(1, 0, 0, 30)
+Title.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.TextScaled = true
+
+Info.Text = "🐾 PET SPAWNER UPDATE 🐾"
+Info.Position = UDim2.new(0, 0, 0, 30)
+Info.Size = UDim2.new(1, 0, 0, 20)
+Info.TextColor3 = Color3.fromRGB(200, 200, 200)
+Info.BackgroundTransparency = 1
+Info.TextScaled = true
+
+PetName.Text = "Pet Name: Fluffy"
+PetName.Position = UDim2.new(0, 0, 0, 55)
+PetName.Size = UDim2.new(1, 0, 0, 20)
+PetName.BackgroundTransparency = 1
+PetName.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+PetKG.Text = "Pet Kilo: 45 KG"
+PetKG.Position = UDim2.new(0, 0, 0, 75)
+PetKG.Size = UDim2.new(1, 0, 0, 20)
+PetKG.BackgroundTransparency = 1
+PetKG.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+PetAge.Text = "Pet Age: 5 yrs"
+PetAge.Position = UDim2.new(0, 0, 0, 95)
+PetAge.Size = UDim2.new(1, 0, 0, 20)
+PetAge.BackgroundTransparency = 1
+PetAge.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+-- Spawn Button
+SpawnButton.Text = "Spawn 🐾"
+SpawnButton.Position = UDim2.new(0.1, 0, 0.7, 0)
+SpawnButton.Size = UDim2.new(0.35, 0, 0.2, 0)
+SpawnButton.BackgroundColor3 = Color3.fromRGB(0, 170, 0)
+SpawnButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+-- Dupe Button
+DupeButton.Text = "Dupe ⚙️"
+DupeButton.Position = UDim2.new(0.55, 0, 0.7, 0)
+DupeButton.Size = UDim2.new(0.35, 0, 0.2, 0)
+DupeButton.BackgroundColor3 = Color3.fromRGB(170, 0, 0)
+DupeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+-- Loading Frame
+LoadingFrame.Size = UDim2.new(0, 300, 0, 100)
+LoadingFrame.Position = UDim2.new(0.5, -150, 0.5, -50)
+LoadingFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+LoadingFrame.Visible = false
+
+LoadingText.Text = "🔄 Generating Pet ID number for dupe..."
+LoadingText.Size = UDim2.new(1, 0, 1, 0)
+LoadingText.TextColor3 = Color3.fromRGB(255, 255, 255)
+LoadingText.BackgroundTransparency = 1
+LoadingText.TextScaled = true
+LoadingText.Parent = LoadingFrame
+
+-- Button Function
+local function showLoading()
+	LoadingFrame.Visible = true
+	wait(3)
+	LoadingFrame.Visible = false
+end
+
+SpawnButton.MouseButton1Click:Connect(function()
+	showLoading()
+	print("✅ Pet Spawned")
+end)
+
+DupeButton.MouseButton1Click:Connect(function()
+	showLoading()
+	print("✅ Pet Duplicated")
+end)
